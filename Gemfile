@@ -30,6 +30,13 @@ gem "rails_12factor"
 # Necessário para o bot
 gem "twitter"
 
+# Variáveis de ambiente
+gem 'dotenv-rails', :groups => [:development, :test]
+
+# Fazer requisições à API do "Quanto Custa 1 Bitcoin?"
+gem 'httparty', '~> 0.13.3'
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
