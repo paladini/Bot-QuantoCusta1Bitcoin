@@ -12,7 +12,7 @@ module Util
   @participar_de_conversas = false
 
   ### CONFIGURAÇÕES AVANÇADAS ###
-  @url_api = "https://quantocusta1bitcoin.herokuapp.com/api/v1/cotacao"
+  @url_api = "http://www.quantocusta1bitcoin.com.br/api/v1/cotacao"
   @consumer_key = ENV['CONSUMER_KEY']
   @consumer_secret = ENV['CONSUMER_SECRET']
   @access_token = ENV['ACCESS_TOKEN']

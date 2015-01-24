@@ -17,3 +17,5 @@
 
 # Ignora o arquivo que armazena qual foi o último tweet feito.
 /public/answers.json
+/public/
+/public/*
