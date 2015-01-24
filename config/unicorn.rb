@@ -1,7 +1,7 @@
 #worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
 worker_processes 3
 
-timeout 15
+timeout 30
 preload_app true
 
 before_fork do |server, worker|
@@ -29,4 +29,5 @@ after_fork do |server, worker|
   Sidekiq.configure_server do |config|
     config.redis = { :size => 5 }
   end
+
 end
