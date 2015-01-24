@@ -28,6 +28,7 @@ after_fork do |server, worker|
 
   Sidekiq.configure_server do |config|
     config.redis = { :size => 5 }
+    config.failures_max_count = 100
   end
 
 end

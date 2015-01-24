@@ -50,5 +50,6 @@ gem 'whenever', :require => false
 # Gerenciador de tarefas e suas dependências
 gem 'sidekiq'
 gem "sidekiq-cron"
+gem 'sidekiq-failures'
 gem 'sinatra', :require => nil
 gem 'redis'
