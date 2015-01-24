@@ -1,4 +1,40 @@
 #encoding: utf-8
+#
+###
+### Bot responsável por fazer posts periódicos no Twitter.
+###
+#
+# Esse "worker" é responsável por fazer posts periódicos no Twitter utilizando
+# a cotação do BTC na Foxbit. De acordo com as configurações em
+# "/lib/tasks/bot.rake", esse bot será executado a cada 30 minutos. Caso
+# ocorra algum erro no processo, o comando "sidekiq_options :retry => 3"
+# garante que esse mesmo script vai ser executado 3 vezes antes de ser
+# considerado morto (considerando que em todas as 3 vezes que seja executado
+# aconteceria algum erro).
+#
+# O seu funcionamento é simples e depende de um banco de dados Postgresql para
+# funcionar corretamente. Os passos do algoritmo, de forma resumida, são os
+# que seguem:
+#
+#   1. Obtem a cotação atual da Foxbit para 1 BTC utilizando a API do
+#      projeto "Quanto Custa 1 Bitcoin?".
+#   2. Formata a mensagem de post baseado no "template" de mensagem chamado
+#      "@mensagem_post" que está localizado em "app/workers/util.rb".
+#   3. Envia mensagem ao Twitter.
+#   4. Atualiza banco de dados com a data deste último post no Twitter.
+#   5. Para finalizar, o bot gera algumas mensagens no Logger do Rails, que
+#      ficarão armazenados em um arquivo chamado "production.log", lá no
+#      servidor do Heroku.
+#
+# Bot.find(1) => está procurando no banco de dados o registro de ID 1, que
+# nesse caso seria o dado com a data do último POST feito pelo Bot no Twitter.
+# Dúvidas, veja o banco de dados do Postgresql e verá que só tem duas linhas
+# adicionadas na tabela (ou seja, dois dados, o com ID=1 e o com ID=2).
+#
+# [OBS] Vale constar que o dado da última RESPOSTA no Twitter é DIFERENTE
+#       do dado do último POST no Twitter.
+#
+##
 require 'util'
 
 class PostWorker

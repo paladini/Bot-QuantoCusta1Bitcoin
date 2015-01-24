@@ -1,4 +1,53 @@
 #encoding: utf-8
+#
+###
+### Bot responsável por responder menções.
+###
+#
+# Esse "worker" é responsável por responder todas as menções que o Bot receber
+# pelo Twitter. De acordo com as configurações em /lib/tasks/bot.rake, esse
+# bot será executado a cada minuto. Caso ocorra algum erro no processo, o
+# comando "sidekiq_options :retry => 3" garante que esse mesmo script vai
+# ser executado 3 vezes antes de ser considerado morto (considerando que
+# em todas as 3 vezes que seja executado aconteceria algum erro).
+#
+# O seu funcionamento é simples e depende de um banco de dados Postgresql para
+# funcionar corretamente. Os passos do algoritmo, de forma resumida, são os
+# que seguem:
+#
+#   1. Obtem TODAS as menções feitas ao Bot no Twitter.
+#   2. Pega no banco de dados a última vez que o Bot respondeu alguém no
+#      Twitter.
+#   3. Verifica as menções de acordo com configuração @participar_de_conversas
+#      no arquivo "app/workers/util.rb". Se o bot:
+#
+#         a) Precisa responder à conversas: quaisquer menções feitas DEPOIS do
+#            último post do Bot no Twitter devem ser respondidas.
+#         b) Precisa responder à conversas (padrão): apenas as menções
+#            feitas DEPOIS do último post do Bot no Twitter devem ser
+#            respondidas.
+#   4. Após ser criada a lista de menções que precisam ser respondidas, uma
+#      iteração ao contrário é feita no vetor para que as respostas sejam
+#      feitas da mais antiga para a mais nova.
+#   5. As mensagens de cada resposta são geradas baseada em um "template" de
+#      mensagem chamado "@mensagem_resposta" localizado no arquivo
+#      "app/workers/util.rb". Após isso a mensagem é enviada ao Twitter.
+#   6. A última resposta (ou a mais recente) é armazenada e a sua data
+#      de criação é utilizada para atualizar o banco de dados como a última
+#      data de uma mensagem enviada pelo bot.
+#   7. Para finalizar, o bot gera algumas mensagens no Logger do Rails, que
+#      ficarão armazenados em um arquivo chamado "production.log", lá no
+#      servidor do Heroku.
+#
+# Bot.find(2) => está procurando no banco de dados o registro com ID 2, que
+# seria justamente o registro com a data de última RESPOSTA no Twitter.
+# Dúvidas, veja o banco de dados do Postgresql e verá que só tem duas linhas
+# adicionadas na tabela (ou seja, dois dados, o com ID=1 e o com ID=2).
+#
+# [OBS] Vale constar que o dado da última RESPOSTA no Twitter é DIFERENTE
+#       do dado do último POST no Twitter.
+#
+##
 require 'util'
 
 class ReplyWorker
@@ -18,7 +67,7 @@ class ReplyWorker
       end
     end
 
-    # Lendo data da última resposta dada pelo Bot
+    # Consulta no banco de dados a data da última resposta dada pelo Bot
     data_ultima_resposta = Bot.find(2).updated_at.utc
 
     # Capturando os tweets que ainda não foram respondidos
