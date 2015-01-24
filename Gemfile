@@ -36,6 +36,12 @@ gem 'dotenv-rails', :groups => [:development, :test]
 # Fazer requisições à API do "Quanto Custa 1 Bitcoin?"
 gem 'httparty', '~> 0.13.3'
 
+# Agendador de tarefas
+gem 'whenever', :require => false
+
+# Gerenciador de tarefas e suas dependências
+gem 'sidekiq'
+gem 'sinatra', :require => nil
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
