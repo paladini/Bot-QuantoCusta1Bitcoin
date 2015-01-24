@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  # Configuração de rotá da página inicial.
   root :to => "static#home"
 
   # Monitoramento das tarefas agendadas.

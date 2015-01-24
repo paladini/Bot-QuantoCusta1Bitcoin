@@ -56,34 +56,6 @@ module Util
     return mensagem
   end
 
-  # Salva a data da última resposta no banco de dados.
-  # def self.salvar_data(data = Time.now )
-    # Bot.update(description: "", )
-    # json = {
-    #   :lastAnsweredTweet => data
-    # }
-    # File.open("public/answers.json","w") do |f|
-    #   f.write(json.to_json)
-    # end
-  # end
-
-  # Lê do banco de dados a data do último tweet respondido.
-  # def self.ler_data()
-
-    # begin
-    #   data = JSON.parse(File.read(Rails.public_path.join('answers.json')))
-    #   data = DateTime.parse(data["lastAnsweredTweet"])
-    # rescue Errno::ENOENT => e
-    #   data = nil
-    #   Rails.logger.error("============================================")
-    #   Rails.logger.error("[ERRO] Erro que pode ser não fatal caso esteja ocorrendo na primeira vez. \nCaso este seja um erro recorrente, entre em contato com o administrador do sistema. \nMensagem de erro: " + e.message)
-    #   Rails.logger.error("============================================")
-
-    # ensure
-    #   return data || 42.years.ago
-    # end
-  # end
-
   #### Variáveis de classe (getters e setters) ####
   def self.cliente
     return Twitter::REST::Client.new do |config|
