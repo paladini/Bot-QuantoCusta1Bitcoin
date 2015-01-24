@@ -18,15 +18,15 @@ class ReplyWorker
       end
     end
 
-    # Lendo data da última resposta dada
-    data_ultima_resposta = Util::ler_data()
+    # Lendo data da última resposta dada pelo Bot
+    data_ultima_resposta = Bot.find(2).updated_at.utc
 
     # Capturando os tweets que ainda não foram respondidos
     mencoes_nao_respondidas = []
     mencoes.each do |m|
 
       # Verifica se essa menção ainda não teve resposta.
-      if m.created_at >= data_ultima_resposta
+      if m.created_at.dup.utc >= data_ultima_resposta
 
         # Bot pode responder conversas? Se sim, já adiciona a menção ao grupo de menções que precisam ser respondidos.
         if Util::participar_de_conversas()
@@ -59,7 +59,6 @@ class ReplyWorker
         # Preparando mensagem para ser enviada.
         mensagem = Util::inserir_valores_resposta(cotacao_atual, m.user.screen_name)
 
-        # Rails.logger.info(mensagem)
         # Respondendo mensagem ao destinatário.
         begin
           ultimo = Util::cliente.update(mensagem, :in_reply_to_status_id => m.id)
@@ -74,12 +73,10 @@ class ReplyWorker
       end
 
       # Salvando data do último tweet respondido
-      # Util::salvar_data(ultimo.created_at)
-      Util::salvar_data(Time.now)
+      Bot.find(2).update_column(:updated_at, ultimo.created_at)
 
       # Posta uma mensagem no Terminal alertando das respostas.
-      # data = ultimo.created_at.strftime("%e %b %Y %H:%M:%S%p")
-      data = Time.now.strftime("%e %b %Y %H:%M:%S%p")
+      data = ultimo.created_at.strftime("%e %b %Y %H:%M:%S%p")
       Rails.logger.info("[INFO] #{mencoes_nao_respondidas.size} pessoa(s) foram respondidas no Twitter entre #{data_ultima_resposta} e #{data}.")
 
     end
