@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root :to => "static#home"
+
   # Monitoramento das tarefas agendadas.
   # Para verificar a execução de tarefas, vá em: www.meusite.com/sidekiq/.
   # Login e senha podem ser encontrados nas variáveis de ambiente SIDEKIQ_USERNAME e SIDEKIQ_PASSWORD dentro do arquivo ".env".

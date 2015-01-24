@@ -7,7 +7,7 @@ module Util
 
   ### CONFIGURAÇÕES BÁSICAS ###
   @mensagem_post = "Quanto está custando <%quantidade%> BTC agora? Na Foxbit custa apenas R$<%preco%>! #bitcoin #foxbit"
-  @mensagem_resposta = "Olá @<%username%>, a cotação de <%quantidade%> BTC é R$<%preco%>. Você já conhece a Foxbit, a exchange mais adorada do Brasil?"
+  @mensagem_resposta = "Olá @<%username%>, a cotação de <%quantidade%> BTC na #Foxbit é de R$<%preco%>. Aproveite a promoção de taxa 0% e negocie bitcoins na www.foxbit.com.br"
   @quantidade = 1.0
   @participar_de_conversas = false
 
