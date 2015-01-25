@@ -1,4 +1,80 @@
 #encoding: utf-8
+#
+###
+### Responsável por boa parte das configurações do projeto.
+###
+#
+# Esse arquivo é responsável por boa parte das configurações desse projeto e
+# também é responsável por vários métodos úteis ao projeto. Abaixo uma
+# explicação mais detalhada das configurações.
+#
+# [OBS] Não alterar as tags <% ... %>, pode fazer com que o programa não
+#       funcione de maneira correta. Pode mudar as tags de lugar na frase,
+#       mas não deve ser excluído ou ter o seu conteúdo interno modificado.
+#
+# ===== BÁSICAS =====
+#
+#  @mensagem_post:
+#      A mensagem que será enviada pelo Bot ao Twitter informando a cotação
+#      do Bitcoin na Foxbit a cada X minutos (padrão=30 minutos).
+#
+#  @mensagem_resposta:
+#      A mensagem que será enviada pelo Bot ao Twitter respondendo às menções
+#      de outros usuários informando a cotação do Bitcoin na Foxbit.
+#
+#  @quantidade:
+#      A quantidade de bitcoins para qual será retornada a cotação (tanto no
+#      post como nas respostas). O padrão é 1.0 BTC. Tomar cuidado para não
+#      aumentar a ponto de ultrapassar a quantidade de BTC's disponível à
+#      venda na Foxbit.
+#
+#  @participar_de_conversas:
+#      Opção que determina se o Bot responderá SEMPRE que for citado,
+#      incluindo conversas no Twitter. Pelos testes que fiz e os cenários que
+#      imaginei ativar essa opção é algo ruim, mas deixei como uma opção para
+#      aumentar o nível de personalização do sistema. Cenários possíveis:
+#            a. Alguém pede cotação, Bot responde, pessoa agradece, Bot
+#               responde a mesma coisa - denovo, e assim por diante.
+#            b. Alguém marca Bot em uma conversa aleatória, ele vai responder
+#               em um lugar que pode ficar totalmente fora de contexot.
+#            c. Várias pessoas respondem um post do Bot, para cada nova
+#               resposta o Bot vai postar a cotação do Btc.
+#            d. Há muitos outros cenários negativos.
+
+#      A configuração padrão é FALSE - pensar seriamente nas implicações de
+#      interação GIGANTES caso pensem em ativar essa opção.
+#
+#
+# ===== AVANÇADAS =====
+#
+#  @url_api:
+#      A URL da API do projeto "Quanto Custa 1 Bitcoin?". Não é necessário
+#      modificar a menos que o projeto tenha seu domínio modificado ou algum
+#      problema do tipo aconteça.
+#
+#  @consumer_key:
+#      Chave necessária e obtida através do apps.twitter.com.
+#
+#  @consumer_secret:
+#      Chave necessária e obtida através do apps.twitter.com.
+#
+#  @access_token:
+#      Chave necessária e obtida através do apps.twitter.com.
+#
+#  @access_token_secret:
+#      Chave necessária e obtida através do apps.twitter.com.
+#
+#
+# Sobre as variáveis de ambiente:
+#     As variáveis de ambiente (ENV['CONSUMER_KEY'], por exemplo) são variáveis
+#     famosas em qualquer sistema Unix e mais populares ainda em
+#     desenvolvimento de projetos. Todas essas variáveis de ambiente do código #     estão configuradas e disponíveis no Heroku, assim como no localhost
+#     através do arquivo ".env" e da gem "dotenv-rails". Isso permite que
+#     tanto o sistema de Produção como o sistema de desenvolvimento tenham
+#     acesso às mesmas chaves de forma mais ou menos segura do que estarem
+#     "hardcoded".
+#
+##
 require 'twitter'
 require 'httparty'
 require 'json'
