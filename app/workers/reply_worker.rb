@@ -6,7 +6,7 @@
 #
 # Esse "worker" é responsável por responder todas as menções que o Bot receber
 # pelo Twitter. De acordo com as configurações em /lib/tasks/bot.rake, esse
-# bot será executado a cada 2 minutos. Desabilitei os "retries" em caso de erro
+# bot será executado a cada minutos. Desabilitei os "retries" em caso de erro
 # pois o código será executado a cada minuto, se um deles tiver erro não
 # tem problema, pois no minuto seguinte já terá outro. Ao acontecer um erro a
 # tarefa vai ser considerada "morta" (dead task).
@@ -52,7 +52,7 @@ require 'util'
 
 class ReplyWorker
   include Sidekiq::Worker
-  # sidekiq_options :retry => 3 # Cuidado ao ativar essa opção.
+  sidekiq_options :retry => false
 
   def perform()
 
