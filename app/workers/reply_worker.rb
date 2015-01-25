@@ -6,10 +6,10 @@
 #
 # Esse "worker" é responsável por responder todas as menções que o Bot receber
 # pelo Twitter. De acordo com as configurações em /lib/tasks/bot.rake, esse
-# bot será executado a cada minuto. Caso ocorra algum erro no processo, o
-# comando "sidekiq_options :retry => 3" garante que esse mesmo script vai
-# ser executado 3 vezes antes de ser considerado morto (considerando que
-# em todas as 3 vezes que seja executado aconteceria algum erro).
+# bot será executado a cada 2 minutos. Desabilitei os "retries" em caso de erro
+# pois o código será executado a cada minuto, se um deles tiver erro não
+# tem problema, pois no minuto seguinte já terá outro. Ao acontecer um erro a
+# tarefa vai ser considerada "morta" (dead task).
 #
 # O seu funcionamento é simples e depende de um banco de dados Postgresql para
 # funcionar corretamente. Os passos do algoritmo, de forma resumida, são os
@@ -52,7 +52,7 @@ require 'util'
 
 class ReplyWorker
   include Sidekiq::Worker
-  sidekiq_options :retry => 3
+  # sidekiq_options :retry => 3 # Cuidado ao ativar essa opção.
 
   def perform()
 
@@ -61,7 +61,7 @@ class ReplyWorker
       mencoes = Util::cliente.mentions
     rescue Timeout::Error, Twitter::Error => error
       if error.is_a?(Timeout::Error) || error.cause.is_a?(Timeout::Error) || error.cause.is_a?(Faraday::Error::TimeoutError)
-        retry
+        raise
       else
         raise
       end
@@ -113,7 +113,7 @@ class ReplyWorker
           ultimo = Util::cliente.update(mensagem, :in_reply_to_status_id => m.id)
         rescue Timeout::Error, Twitter::Error => error
           if error.is_a?(Timeout::Error) || error.cause.is_a?(Timeout::Error) || error.cause.is_a?(Faraday::Error::TimeoutError)
-            retry
+            raise
           else
             raise
           end

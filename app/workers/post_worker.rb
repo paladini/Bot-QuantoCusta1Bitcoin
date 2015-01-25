@@ -63,7 +63,7 @@ class PostWorker
 
     rescue Timeout::Error, Twitter::Error => error
       if error.is_a?(Timeout::Error) || error.cause.is_a?(Timeout::Error) || error.cause.is_a?(Faraday::Error::TimeoutError)
-        retry
+        raise
       else
         raise
       end

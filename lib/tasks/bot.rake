@@ -42,7 +42,7 @@ namespace :bot do
     post_worker.enque!
 
     # Criando tarefa agendada para responder tweets (replies).
-    reply_worker = Sidekiq::Cron::Job.new(name: 'Reply Worker - A cada min', cron: '* * * * *', klass: 'ReplyWorker')
+    reply_worker = Sidekiq::Cron::Job.new(name: 'Reply Worker - A cada 2 min', cron: '2 * * * *', klass: 'ReplyWorker', retry: 'false')
     if reply_worker.save
         puts "==============================================="
         puts " CronJob \"reply_worker\" criado com sucesso."
