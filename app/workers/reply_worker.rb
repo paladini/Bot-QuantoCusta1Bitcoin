@@ -121,12 +121,17 @@ class ReplyWorker
 
       end
 
-      # Salvando data do último tweet respondido
-      Bot.find(2).update_column(:updated_at, ultimo.created_at)
+      # Verificando se o último tweet é não-nulo.
+      if !ultimo.nil?
 
-      # Posta uma mensagem no Terminal alertando das respostas.
-      data = ultimo.created_at.strftime("%e %b %Y %H:%M:%S%p")
-      Rails.logger.info("[INFO] #{mencoes_nao_respondidas.size} pessoa(s) foram respondidas no Twitter entre #{data_ultima_resposta} e #{data}.")
+        # Salvando data do último tweet respondido
+        Bot.find(2).update_column(:updated_at, ultimo.created_at)
+
+        # Posta uma mensagem no Terminal alertando das respostas.
+        data = ultimo.created_at.strftime("%e %b %Y %H:%M:%S%p")
+        Rails.logger.info("[INFO] #{mencoes_nao_respondidas.size} pessoa(s) foram respondidas no Twitter entre #{data_ultima_resposta} e #{data}.")
+
+      end
 
     end
 
