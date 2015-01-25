@@ -54,7 +54,8 @@ class PostWorker
 
     # Envia mensagem para o Twitter
     begin
-      # Util::cliente.update(mensagem_formatada)
+
+      # Enviando mensagem e obtendo data de criação do tweet.
       horario = Util::cliente.update(mensagem_formatada).created_at
 
       # Atualizando banco de dados
