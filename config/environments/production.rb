@@ -69,7 +69,7 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   # Necessário para o Heroku exibir arquivos em /public.
-  config.serve_static_assets = true
+  # config.serve_static_assets = true
 
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
